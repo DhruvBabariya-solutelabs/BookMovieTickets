@@ -1,6 +1,8 @@
 import express from "express";
 import userController from "../controllers/UserController.js";
 import { body } from "express-validator";
+import movieController from "../controllers/movieController.js";
+import isAuth from "../middleware/is-auth.js";
 
 const router = express.Router();
 
@@ -33,4 +35,24 @@ router.post(
   userController.logIn
 );
 
+router.get("/movies", movieController.getMovies);
+
+router.post(
+  "/movie/bookticket/:movieId",
+  isAuth,
+  movieController.bookMovieTicket
+);
+
+router.post(
+  "/movie/cancelticket/:ticketId",
+  isAuth,
+  movieController.cancelMovieTicket
+);
+
+router.get("/upcomingmovies", movieController.getUpcomingMovies);
+router.get(
+  "/currenmovie/shortbyshows",
+  movieController.getCurrentMovieShortByShows
+);
 export default router;
+[];

@@ -8,19 +8,23 @@ const movieTicket = new Schema({
     ref: "Movie",
     required: true,
   },
+  showtime: {
+    type: Date,
+    required: true,
+  },
   user: {
     type: mongoose.Schema.Types.ObjectId,
     ref: "User",
     required: true,
   },
   price: {
-    type: String,
-    enum: ["gold", "silver", "platinum"],
+    type: Number,
     required: true,
   },
   seat: {
     type: String,
-    enum: ["gold", "silver", "platinum"],
     required: true,
   },
 });
+
+export default mongoose.model("MovieTicket", movieTicket);

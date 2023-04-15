@@ -25,7 +25,6 @@ const createUser = async (req, res, next) => {
       contact: contact,
       role: role,
     });
-    console.log(email);
     const userData = await userService.findUser(email);
 
     if (userData) {
@@ -54,7 +53,6 @@ const logIn = async (req, res, next) => {
   }
   try {
     const user = await userService.findUser(email);
-    console.log(user);
     if (!user) {
       const err = new Error("A user with this email is not found");
       err.statusCode = 401;
@@ -96,7 +94,6 @@ const logIn = async (req, res, next) => {
 const updateUser = async (req, res, next) => {
   const userId = req.params.id;
   const user = await userService.findUserById(userId);
-  console.log(user);
   const { email, password, name, contact } = req.body;
   if (!user) {
     const err = new Error("User is not found");

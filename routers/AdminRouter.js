@@ -1,5 +1,5 @@
 import route from "express";
-import adminController from "../controllers/adminController.js";
+import adminController from "../controllers/AdminController.js";
 import isAuth from "../middleware/is-auth.js";
 import isAdmin from "../middleware/is-admin.js";
 

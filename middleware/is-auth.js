@@ -4,9 +4,7 @@ import User from "../models/User.js";
 export default async (req, res, next) => {
   const authHeader = req.get("Authorization");
   if (!authHeader) {
-    const error = new Error("Not authanticated");
-    error.statusCode = 401;
-    throw error;
+    return res.status(422).json("Not Authantcated");
   }
   const token = req.get("Authorization");
 
@@ -14,13 +12,10 @@ export default async (req, res, next) => {
   try {
     decodedToken = jwt.verify(token, "somesecretsecretsecret");
   } catch (err) {
-    err.statusCode = 500;
-    throw err;
+    return res.status(422).json("Not Authantcated");
   }
   if (!decodedToken) {
-    const error = new Error("Not authanticated");
-    error.statusCode = 401;
-    throw error;
+    return res.status(422).json("Not Authantcated");
   }
   req.userId = decodedToken.userId;
   req.user = await User.findById(req.userId);

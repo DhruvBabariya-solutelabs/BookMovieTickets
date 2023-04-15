@@ -12,9 +12,10 @@ const saveMovie = async (req, res, next) => {
       shows,
     } = req.body;
 
+    const date = new Date(releaseDate);
     const movie = new Movie({
       title: title,
-      releaseDate: releaseDate,
+      releaseDate: date,
       castName: castName,
       directorsName: directorsName,
       choreographers: choreographers,
@@ -73,9 +74,9 @@ const updateMovie = async (req, res, next) => {
       err.statusCode = 404;
       throw err;
     }
-
+    const date = new Date(releaseDate);
     movie.title = title;
-    movie.releaseDate = releaseDate;
+    movie.releaseDate = date;
     movie.castName = castName;
     movie.directorsName = directorsName;
     movie.choreographers = choreographers;
