@@ -13,28 +13,48 @@ const movieSchema = new Schema({
     required: true,
   },
 
-  castName: [
-    {
-      type: String,
-    },
-  ],
-
-  directorsName: [
-    {
-      type: String,
-    },
-  ],
-
-  choreographers: [
-    {
-      type: String,
-    },
-  ],
-
-  movieStatus: {
-    type: String,
-    default: "Running",
+  castName: {
+    type: [String],
+    required: true,
   },
+
+  directorsName: {
+    type: [String],
+    required: true,
+  },
+
+  choreographers: {
+    type: [String],
+    required: true,
+  },
+
+  createdBy: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: "User",
+  },
+
+  shows: [
+    {
+      time: {
+        type: Date,
+        required: true,
+      },
+      seats: {
+        gold: {
+          type: Number,
+          required: true,
+        },
+        silver: {
+          type: Number,
+          required: true,
+        },
+        platinum: {
+          type: Number,
+          required: true,
+        },
+      },
+    },
+  ],
 });
 
 export default mongoose.model("Movie", movieSchema);

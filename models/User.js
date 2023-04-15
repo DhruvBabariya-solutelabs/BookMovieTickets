@@ -14,13 +14,18 @@ const UserSchema = new Schema({
     type: String,
     required: true,
   },
-  contect: {
+  contact: {
     type: Number,
+    unique: true,
     required: true,
   },
   role: {
     type: String,
     default: "User",
+  },
+  status: {
+    type: Number,
+    default: 1,
   },
 });
 
