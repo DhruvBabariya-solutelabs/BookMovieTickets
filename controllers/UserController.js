@@ -95,6 +95,10 @@ const updateUser = async (req, res, next) => {
   const userId = req.params.id;
   const user = await userService.findUserById(userId);
   const { email, password, name, contact } = req.body;
+  const errors = validationResult(req);
+  if (!errors.isEmpty()) {
+    return res.status(422).json("Validation Failed");
+  }
   if (!user) {
     const err = new Error("User is not found");
     err.statusCode = 401;

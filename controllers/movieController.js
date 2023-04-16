@@ -146,9 +146,26 @@ const getUpcomingMovies = async (req, res, next) => {
     });
   }
 };
+
+const getCurrentMovieShortByShows = async (req, res, next) => {
+  const currentTime = new Date();
+  const movies = await Movie.find({ releaseDate: { $lte: currentTime } }).sort({
+    "shows.time": 1,
+  });
+  if (!movies) {
+    res.status(402).json({
+      message: "Movies Not Found",
+    });
+  } else {
+    res.status(200).json({
+      movies: movies,
+    });
+  }
+};
 export default {
   getMovies,
   bookMovieTicket,
   cancelMovieTicket,
   getUpcomingMovies,
+  getCurrentMovieShortByShows,
 };

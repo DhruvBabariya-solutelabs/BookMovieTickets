@@ -11,9 +11,7 @@ router.post(
   [
     body("email").isEmail().withMessage("Please enter valid email"),
 
-    body("name", "please enter valid name")
-      .isLength({ min: 3 })
-      .isAlphanumeric(),
+    body("name", "please enter valid name").isLength({ min: 3 }),
     body("contact", "please enter only 10 digites contact no.").isLength({
       min: 10,
       max: 10,
@@ -35,7 +33,7 @@ router.post(
   userController.logIn
 );
 
-router.get("/movies", movieController.getMovies);
+router.get("/movies", isAuth, movieController.getMovies);
 
 router.post(
   "/movie/bookticket/:movieId",
@@ -49,10 +47,10 @@ router.post(
   movieController.cancelMovieTicket
 );
 
-router.get("/upcomingmovies", movieController.getUpcomingMovies);
+router.get("/upcomingmovies", isAuth, movieController.getUpcomingMovies);
 router.get(
   "/currenmovie/shortbyshows",
+  isAuth,
   movieController.getCurrentMovieShortByShows
 );
 export default router;
-[];
