@@ -2,6 +2,7 @@ import express from "express";
 import userController from "../controllers/UserController.js";
 import isSuperAdmin from "../middleware/is-superAdmin.js";
 import isAuth from "../middleware/is-auth.js";
+import { body } from "express-validator";
 const router = express.Router();
 
 router.post(

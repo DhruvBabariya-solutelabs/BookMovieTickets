@@ -5,7 +5,6 @@ import bodyParser from "body-parser";
 import adminRouter from "./routers/adminRouter.js";
 import userRouter from "./routers/UserRoute.js";
 import superAdminRouter from "./routers/SuperAdminRouter.js";
-import User from "./models/User.js";
 
 dotenv.config();
 const app = express();
