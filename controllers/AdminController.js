@@ -11,7 +11,11 @@ const saveMovie = async (req, res, next) => {
       choreographers,
       shows,
     } = req.body;
-
+    shows.totalseats =
+      shows.seats.gold.seat +
+      shows.seats.silver.seat +
+      shows.seats.platinum.seat;
+    console.log(shows.totalseats);
     const date = new Date(releaseDate);
     const movie = new Movie({
       title: title,

@@ -3,7 +3,10 @@ import userController from "../controllers/UserController.js";
 import isSuperAdmin from "../middleware/is-superAdmin.js";
 import isAuth from "../middleware/is-auth.js";
 import { body } from "express-validator";
+import bodyParser from "body-parser";
 const router = express.Router();
+
+router.use(bodyParser.json());
 
 router.post(
   "/signup-admin",

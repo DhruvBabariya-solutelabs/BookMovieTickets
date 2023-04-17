@@ -3,12 +3,16 @@ import userService from "../services/userService.js";
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
 import { validationResult } from "express-validator";
+import dotenv from "dotenv";
+import constant from "../util/constant.js";
+
+dotenv.config();
 
 const createUser = async (req, res, next) => {
-  let role = "User";
+  let role = constant.USER;
   if (req.user) {
-    if (req.user.role === "super-admin") {
-      role = "Admin";
+    if (req.user.role === constant.SUPER_ADMIN) {
+      role = constant.ADMIN;
     }
   }
   const errors = validationResult(req);
@@ -16,6 +20,12 @@ const createUser = async (req, res, next) => {
     return res.status(422).json("Validation Failed");
   }
   try {
+    if (userData) {
+      const err = new Error("User is Already Exist");
+      err.statusCode = 401;
+      throw err;
+    }
+
     const { email, password, name, contact } = req.body;
     const hashPassword = await bcrypt.hash(password.trim(), 12);
     const user = new User({
@@ -27,11 +37,6 @@ const createUser = async (req, res, next) => {
     });
     const userData = await userService.findUser(email);
 
-    if (userData) {
-      const err = new Error("User is Already Exist");
-      err.statusCode = 401;
-      throw err;
-    }
     const savedUser = userService.createUser(user);
     res.status(201).json({
       message: "User is Register",
@@ -75,7 +80,7 @@ const logIn = async (req, res, next) => {
         email: user.email,
         userId: user._id.toString(),
       },
-      "somesecretsecretsecret",
+      process.env.SECRETE_KEY,
       { expiresIn: "1h" }
     );
 

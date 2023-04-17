@@ -40,35 +40,39 @@ const movieSchema = new Schema({
         required: true,
       },
       seats: {
-        totalseats: {
+        total: {
           type: Number,
           required: true,
         },
         gold: {
-          type: Number,
-          required: true,
+          price: {
+            type: Number,
+            required: true,
+          },
+          seat: {
+            type: Number,
+            required: true,
+          },
         },
         silver: {
-          type: Number,
-          required: true,
+          price: {
+            type: Number,
+            required: true,
+          },
+          seat: {
+            type: Number,
+            required: true,
+          },
         },
         platinum: {
-          type: Number,
-          required: true,
-        },
-      },
-      price: {
-        gold: {
-          type: Number,
-          required: true,
-        },
-        silver: {
-          type: Number,
-          required: true,
-        },
-        platinum: {
-          type: Number,
-          required: true,
+          price: {
+            type: Number,
+            required: true,
+          },
+          seat: {
+            type: Number,
+            required: true,
+          },
         },
       },
     },
