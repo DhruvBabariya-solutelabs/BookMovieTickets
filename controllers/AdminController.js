@@ -11,6 +11,7 @@ const saveMovie = async (req, res, next) => {
       choreographers,
       shows,
     } = req.body;
+    console.log(shows);
     // let totalseats = 0;
 
     // if (shows && shows.seats) {
@@ -23,7 +24,7 @@ const saveMovie = async (req, res, next) => {
     //   totalseats = goldSeats + silverSeats + platinumSeats;
     // }
 
-    // console.log(`Total seat: ${totalseats}`);
+    // console.log(`Total seat: ${totalseat}`);
 
     const date = new Date(releaseDate);
     const movie = new Movie({
@@ -35,6 +36,13 @@ const saveMovie = async (req, res, next) => {
       createdBy: req.userId,
       shows: shows,
     });
+    for (let i = 0; i < shows.length; i++) {
+      movie.shows[i].totalseat =
+        movie.shows[i].seats.gold.seat +
+        movie.shows[i].seats.silver.seat +
+        movie.shows[i].seats.platinum.seat;
+      movie.shows[i].availableseats = movie.shows[i].totalseat;
+    }
 
     const movieData = await adminService.createMovie(movie);
 

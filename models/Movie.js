@@ -39,11 +39,15 @@ const movieSchema = new Schema({
         type: Date,
         required: true,
       },
+      totalseat: {
+        type: Number,
+        required: true,
+      },
+      availableseats: {
+        type: Number,
+        required: true,
+      },
       seats: {
-        total: {
-          type: Number,
-          required: true,
-        },
         gold: {
           price: {
             type: Number,

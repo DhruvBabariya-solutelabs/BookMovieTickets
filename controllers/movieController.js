@@ -45,13 +45,13 @@ const bookMovieTicket = async (req, res, next) => {
     }
     const showtimes = movie.shows;
     let seatValue;
-    let priceValue;
-    let l;
+    // let priceValue;
+    let index;
     for (let i = 0; i < showtimes.length; i++) {
       if (showTime.toString() == showtimes[i].time.toString()) {
         seatValue = showtimes[i].seats;
-        priceValue = showtimes[i].price;
-        l = i;
+        // priceValue = showtimes[i].price;
+        index = i;
       }
     }
     if (!seatValue) {
@@ -64,19 +64,20 @@ const bookMovieTicket = async (req, res, next) => {
           message: "Seats is not available",
         });
       }
-      if (seatValue[`${seat}`] === 0) {
+      if (seatValue.seats[`${seat}`].seats === 0) {
         return res.status(422).json({
           message: "seat is not available",
         });
       }
-      movie.shows[l].seats.totalseats -= 1;
-      movie.shows[l].seats[`${seat}`] -= 1;
+
+      movie.shows[index].availableseats -= 1;
+      movie.shows[index].seats[`${seat}`].seat -= 1;
       await movie.save();
       const movieTicket = new MovieTicket({
         movie: movie._id,
         showtime: showTime,
         user: userId,
-        price: priceValue[`${seat}`],
+        price: seatValue[`${seat}`].price,
         seat: seat,
       });
       await movieTicket.save();
@@ -107,17 +108,17 @@ const cancelMovieTicket = async (req, res, next) => {
   const showTime = movieticket.showtime;
 
   try {
-    let l;
+    let index;
     const movie = await Movie.findById(movieId);
     const showtimes = movie.shows;
     for (let i = 0; i < showtimes.length; i++) {
       if (showTime.toString() == showtimes[i].time.toString()) {
-        l = i;
+        index = i;
       }
     }
-    console.log(l);
-    movie.shows[l].seats.totalseats += 1;
-    movie.shows[l].seats[`${seat}`] += 1;
+    console.log(index);
+    movie.shows[index].availableseats += 1;
+    movie.shows[index].seats[`${seat}`].seat += 1;
     await movie.save();
     await MovieTicket.findByIdAndDelete(ticketId);
     return res.status(204).json({
