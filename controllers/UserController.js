@@ -10,22 +10,25 @@ dotenv.config();
 
 const createUser = async (req, res, next) => {
   let role = constant.USER;
-  if (req.user) {
-    if (req.user.role === constant.SUPER_ADMIN) {
-      role = constant.ADMIN;
+  const userCount = await userService.getUserCount();
+  if (userCount == 0) {
+    role = constant.SUPER_ADMIN;
+  } else {
+    const superAdmin = await userService.findSuperAdmin();
+    if (!superAdmin) {
+      role = constant.SUPER_ADMIN;
     }
   }
+  // if (req.user) {
+  //   if (req.user.role === constant.SUPER_ADMIN) {
+  //     role = constant.ADMIN;
+  //   }
+  // }
   const errors = validationResult(req);
   if (!errors.isEmpty()) {
     return res.status(422).json("Validation Failed");
   }
   try {
-    if (userData) {
-      const err = new Error("User is Already Exist");
-      err.statusCode = 401;
-      throw err;
-    }
-
     const { email, password, name, contact } = req.body;
     const hashPassword = await bcrypt.hash(password.trim(), 12);
     const user = new User({
@@ -36,6 +39,12 @@ const createUser = async (req, res, next) => {
       role: role,
     });
     const userData = await userService.findUser(email);
+
+    if (userData) {
+      const err = new Error("User is Already Exist");
+      err.statusCode = 401;
+      throw err;
+    }
 
     const savedUser = userService.createUser(user);
     res.status(201).json({

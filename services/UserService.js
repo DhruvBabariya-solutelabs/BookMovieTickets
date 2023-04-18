@@ -1,5 +1,23 @@
 import User from "../models/User.js";
 
+const getUserCount = async (getUserCount) => {
+  try {
+    const count = await User.countDocuments({});
+    return count;
+  } catch (err) {
+    throw err;
+  }
+};
+
+const findSuperAdmin = async (findSuperAdmin) => {
+  try {
+    const superAdmin = await User.findOne({ role: "super-admin" });
+    return superAdmin;
+  } catch (err) {
+    throw err;
+  }
+};
+
 const createUser = async (userData) => {
   try {
     const savedUser = await userData.save();
@@ -36,4 +54,11 @@ const getAllUsers = async () => {
   }
 };
 
-export default { createUser, findUser, findUserById, getAllUsers };
+export default {
+  getUserCount,
+  findSuperAdmin,
+  createUser,
+  findUser,
+  findUserById,
+  getAllUsers,
+};
