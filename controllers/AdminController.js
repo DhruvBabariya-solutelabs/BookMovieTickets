@@ -11,20 +11,6 @@ const saveMovie = async (req, res, next) => {
       choreographers,
       shows,
     } = req.body;
-    console.log(shows);
-    // let totalseats = 0;
-
-    // if (shows && shows.seats) {
-    //   const goldSeats = shows.seats.gold ? shows.seats.gold.seat : 0;
-    //   const silverSeats = shows.seats.silver ? shows.seats.silver.seat : 0;
-    //   const platinumSeats = shows.seats.platinum
-    //     ? shows.seats.platinum.seat
-    //     : 0;
-
-    //   totalseats = goldSeats + silverSeats + platinumSeats;
-    // }
-
-    // console.log(`Total seat: ${totalseat}`);
 
     const date = new Date(releaseDate);
     const movie = new Movie({

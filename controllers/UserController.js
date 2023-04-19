@@ -9,6 +9,10 @@ import constant from "../util/constant.js";
 dotenv.config();
 
 const createUser = async (req, res, next) => {
+  const errors = validationResult(req);
+  if (!errors.isEmpty()) {
+    return res.status(422).json("Validation Failed");
+  }
   let role = constant.USER;
   const userCount = await userService.getUserCount();
   if (userCount == 0) {
@@ -19,15 +23,12 @@ const createUser = async (req, res, next) => {
       role = constant.SUPER_ADMIN;
     }
   }
-  // if (req.user) {
-  //   if (req.user.role === constant.SUPER_ADMIN) {
-  //     role = constant.ADMIN;
-  //   }
-  // }
-  const errors = validationResult(req);
-  if (!errors.isEmpty()) {
-    return res.status(422).json("Validation Failed");
+  if (req.user) {
+    if (req.user.role === constant.SUPER_ADMIN) {
+      role = constant.ADMIN;
+    }
   }
+
   try {
     const { email, password, name, contact } = req.body;
     const hashPassword = await bcrypt.hash(password.trim(), 12);
@@ -118,7 +119,7 @@ const updateUser = async (req, res, next) => {
     err.statusCode = 401;
     throw err;
   }
-  if (user.role !== "Admin") {
+  if (user.role !== constant.ADMIN) {
     return res
       .status(401)
       .json({ message: "Super Admin can not  update user" });
@@ -129,7 +130,7 @@ const updateUser = async (req, res, next) => {
     user.password = hashPassword;
     user.name = name;
     user.contact = contact;
-    user.role = "Admin";
+    user.role = constant.ADMIN;
     user.status = 1;
 
     const userData = await userService.createUser(user);

@@ -45,12 +45,10 @@ const bookMovieTicket = async (req, res, next) => {
     }
     const showtimes = movie.shows;
     let seatValue;
-    // let priceValue;
     let index;
     for (let i = 0; i < showtimes.length; i++) {
       if (showTime.toString() == showtimes[i].time.toString()) {
-        seatValue = showtimes[i].seats;
-        // priceValue = showtimes[i].price;
+        seatValue = showtimes[i];
         index = i;
       }
     }
@@ -59,12 +57,12 @@ const bookMovieTicket = async (req, res, next) => {
         message: "Show is Not Available",
       });
     } else {
-      if (seatValue.totalseats === 0) {
+      if (seatValue.totalseat === 0) {
         return res.status(422).json({
           message: "Seats is not available",
         });
       }
-      if (seatValue.seats[`${seat}`].seats === 0) {
+      if (seatValue.seats[`${seat}`].seat === 0) {
         return res.status(422).json({
           message: "seat is not available",
         });
@@ -77,7 +75,7 @@ const bookMovieTicket = async (req, res, next) => {
         movie: movie._id,
         showtime: showTime,
         user: userId,
-        price: seatValue[`${seat}`].price,
+        price: seatValue.seats[`${seat}`].price,
         seat: seat,
       });
       await movieTicket.save();
